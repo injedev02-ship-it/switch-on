@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>✨ Switch On — 긍정 피드백 데이</title>
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --sw-pink: #FFD6E0;
+      --sw-yellow: #FFF3B0;
+      --sw-mint: #C8F5E5;
+      --sw-lavender: #E8D5FF;
+      --sw-peach: #FFE0C8;
+      --sw-sky: #D0EEFF;
+      --sw-text: #4A3F5C;
+      --sw-muted: #9B8FAA;
+      --sw-card-border: rgba(180,150,200,0.25);
+      --sw-accent: #FF8FAB;
+      --sw-bg: #FDF8FF;
+      --sw-surface: #FFFFFF;
+      --sw-surface2: #F7F3FB;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nanum Gothic', sans-serif;
+      color: var(--sw-text);
+      background: var(--sw-bg);
+      min-height: 100vh;
+    }
+    .sw-root { padding: 2rem 1rem 3rem; max-width: 760px; margin: 0 auto; }
+    .sw-header { text-align: center; margin-bottom: 1.8rem; }
+    .sw-badge { display: inline-block; background: linear-gradient(135deg, #FFD6E0, #E8D5FF); border-radius: 999px; padding: 4px 18px; font-size: 11px; font-weight: 700; color: #9B5CC0; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+    .sw-title { font-family: 'Gaegu', cursive; font-size: 2.6rem; font-weight: 700; color: var(--sw-text); line-height: 1.2; }
+    .sw-title span { color: var(--sw-accent); }
+    .sw-subtitle { font-size: 13px; color: var(--sw-muted); margin-top: 6px; }
+    .sw-deco { display: flex; justify-content: center; gap: 8px; margin-top: 10px; font-size: 20px; }
+    .sw-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.6rem; }
+    .sw-stat { background: var(--sw-surface); border: 0.5px solid var(--sw-card-border); border-radius: 14px; padding: 14px 10px; text-align: center; }
+    .sw-stat-num { font-family: 'Gaegu', cursive; font-size: 1.9rem; font-weight: 700; line-height: 1; }
+    .sw-stat-label { font-size: 11px; color: var(--sw-muted); margin-top: 4px; }
+    .sw-stat.pink .sw-stat-num { color: #FF8FAB; }
+    .sw-stat.yellow .sw-stat-num { color: #E5A800; }
+    .sw-stat.mint .sw-stat-num { color: #2EBD8A; }
+    .sw-section-title { font-size: 13px; font-weight: 700; color: var(--sw-muted); letter-spacing: 0.5px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .sw-section-title::after { content: ''; flex: 1; height: 0.5px; background: var(--sw-card-border); }
+    .sw-input-area { background: var(--sw-surface); border: 0.5px solid var(--sw-card-border); border-radius: 16px; padding: 1.1rem 1.2rem; margin-bottom: 1.6rem; }
+    .sw-input-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; align-items: center; }
+    .sw-name-input, .sw-to-input { border: 0.5px solid rgba(180,150,200,0.4); border-radius: 10px; padding: 9px 12px; font-family: 'Nanum Gothic', sans-serif; font-size: 13px; color: var(--sw-text); background: var(--sw-surface2); width: 140px; outline: none; }
+    .sw-name-input:focus, .sw-to-input:focus { border-color: var(--sw-accent); }
+    .sw-color-picker { display: flex; gap: 6px; align-items: center; }
+    .sw-color-btn { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: transform 0.15s; }
+    .sw-color-btn:hover, .sw-color-btn.active { transform: scale(1.3); border-color: var(--sw-text); }
+    .sw-textarea { width: 100%; border: 0.5px solid rgba(180,150,200,0.4); border-radius: 12px; padding: 10px 12px; font-family: 'Nanum Gothic', sans-serif; font-size: 13px; color: var(--sw-text); background: var(--sw-surface2); resize: none; height: 76px; outline: none; margin-bottom: 10px; }
+    .sw-textarea:focus { border-color: var(--sw-accent); }
+    .sw-send-btn { background: linear-gradient(135deg, #FF8FAB, #B388FF); color: white; border: none; border-radius: 12px; padding: 10px 22px; font-family: 'Nanum Gothic', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity 0.15s, transform 0.1s; }
+    .sw-send-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .sw-send-btn:active { transform: scale(0.97); }
+    .sw-feed { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.6rem; }
+    .sw-card { border-radius: 16px; padding: 14px 16px; border: 0.5px solid rgba(180,150,200,0.25); position: relative; transition: transform 0.15s; }
+    .sw-card:hover { transform: translateY(-2px); }
+    .sw-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .sw-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; background: linear-gradient(135deg, #FFD6E0, #E8D5FF); color: #9B5CC0; }
+    .sw-card-meta { flex: 1; font-size: 12px; }
+    .sw-from-name { font-weight: 700; color: var(--sw-text); font-size: 13px; }
+    .sw-to-name { color: var(--sw-accent); font-weight: 700; }
+    .sw-time { color: var(--sw-muted); font-size: 11px; }
+    .sw-card-body { font-size: 13.5px; line-height: 1.65; color: var(--sw-text); }
+    .sw-card-footer { display: flex; align-items: center; justify-content: flex-end; margin-top: 10px; }
+    .sw-like-btn { display: flex; align-items: center; gap: 5px; background: none; border: 0.5px solid rgba(180,150,200,0.35); border-radius: 999px; padding: 5px 14px; font-size: 12px; font-family: 'Nanum Gothic', sans-serif; color: var(--sw-muted); cursor: pointer; transition: all 0.18s; }
+    .sw-like-btn:hover { border-color: var(--sw-accent); color: var(--sw-accent); }
+    .sw-like-btn.liked { background: #FFD6E0; border-color: var(--sw-accent); color: var(--sw-accent); font-weight: 700; }
+    .sw-leaderboard { background: var(--sw-surface); border: 0.5px solid var(--sw-card-border); border-radius: 16px; overflow: hidden; }
+    .sw-lb-row { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 0.5px solid rgba(180,150,200,0.2); transition: background 0.12s; }
+    .sw-lb-row:last-child { border-bottom: none; }
+    .sw-lb-row:hover { background: var(--sw-surface2); }
+    .sw-lb-rank { font-family: 'Gaegu', cursive; font-size: 1.1rem; font-weight: 700; width: 24px; text-align: center; flex-shrink: 0; }
+    .sw-lb-av { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg,#FFD6E0,#E8D5FF); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #9B5CC0; flex-shrink: 0; }
+    .sw-lb-name { flex: 1; font-size: 13px; font-weight: 700; }
+    .sw-lb-count { font-size: 12px; color: var(--sw-muted); background: var(--sw-surface2); padding: 3px 10px; border-radius: 999px; }
+    .sw-empty { text-align: center; font-size: 13px; color: var(--sw-muted); padding: 1.5rem 0; }
+    .sw-pop-badge { position: absolute; top: -7px; right: 12px; background: linear-gradient(135deg, #FFB347, #FF8FAB); color: white; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 999px; }
+    .sw-loading { text-align: center; font-size: 13px; color: var(--sw-muted); padding: 1rem 0; }
+    .sw-top-section { margin-bottom: 1.6rem; }
+    .sw-notice { font-size: 11px; color: #9B5CC0; background: #F5EEFF; border-radius: 8px; padding: 7px 14px; margin-bottom: 14px; text-align: center; border: 0.5px solid rgba(180,150,200,0.3); }
+    @media (max-width: 480px) {
+      .sw-title { font-size: 2rem; }
+      .sw-input-row { flex-direction: column; }
+      .sw-name-input, .sw-to-input { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<div class="sw-root">
+  <div class="sw-header">
+    <div class="sw-badge">매달 둘째 주 화요일</div>
+    <div class="sw-title">✨ <span>Switch</span> On <span>🌟</span></div>
+    <div class="sw-subtitle">긍정 피드백 데이 — 서로를 빛나게 해주는 날 💛</div>
+    <div class="sw-deco">🌸 🌈 💌 🎀 🌻</div>
+  </div>
+
+  <div class="sw-notice">💜 팀원 모두와 공유되는 게시판이에요! 같은 링크로 접속하면 함께 볼 수 있어요.</div>
+
+  <div class="sw-stats">
+    <div class="sw-stat pink"><div class="sw-stat-num" id="stat-count">0</div><div class="sw-stat-label">💌 피드백</div></div>
+    <div class="sw-stat yellow"><div class="sw-stat-num" id="stat-likes">0</div><div class="sw-stat-label">💛 좋아요</div></div>
+    <div class="sw-stat mint"><div class="sw-stat-num" id="stat-people">0</div><div class="sw-stat-label">🌟 참여자</div></div>
+  </div>
+
+  <div class="sw-section-title">💌 따뜻한 피드백 남기기</div>
+  <div class="sw-input-area">
+    <div class="sw-input-row">
+      <input class="sw-name-input" id="input-from" placeholder="내 이름 ✏️" maxlength="10" />
+      <input class="sw-to-input" id="input-to" placeholder="받는 분 🎁" maxlength="10" />
+      <div class="sw-color-picker" id="color-picker"></div>
+    </div>
+    <textarea class="sw-textarea" id="input-msg" placeholder="따뜻한 말 한마디 남겨주세요 🌸 (예: 덕분에 오늘도 힘이 났어요!)"></textarea>
+    <button class="sw-send-btn" onclick="submitFeedback()">✨ 피드백 보내기</button>
+  </div>
+
+  <div class="sw-section-title">🌟 피드백 많이 한 분들</div>
+  <div class="sw-top-section">
+    <div class="sw-leaderboard" id="leaderboard"><div class="sw-empty">아직 피드백이 없어요. 첫 번째 주인공이 되어보세요! 🎉</div></div>
+  </div>
+
+  <div class="sw-section-title">💬 오늘의 피드백</div>
+  <div class="sw-feed" id="feed"><div class="sw-empty">아직 피드백이 없어요 🌱<br>첫 번째 따뜻한 말을 남겨보세요!</div></div>
+</div>
+
+<script>
+  const COLORS = [
+    { bg: '#FFF3B0', border: 'rgba(220,180,0,0.25)' },
+    { bg: '#FFD6E0', border: 'rgba(255,100,140,0.25)' },
+    { bg: '#C8F5E5', border: 'rgba(50,180,130,0.25)' },
+    { bg: '#E8D5FF', border: 'rgba(160,100,220,0.25)' },
+    { bg: '#FFE0C8', border: 'rgba(220,130,50,0.25)' },
+    { bg: '#D0EEFF', border: 'rgba(50,130,220,0.25)' },
+  ];
+  const RANK_EMOJI = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+  const STORAGE_KEY = 'switchon-feedbacks-v1';
+
+  let selectedColor = 0;
+  let feedbacks = [];
+  let likedIds = new Set(JSON.parse(localStorage.getItem('switchon-liked') || '[]'));
+
+  function savelikedIds() {
+    localStorage.setItem('switchon-liked', JSON.stringify([...likedIds]));
+  }
+
+  function initColorPicker() {
+    const picker = document.getElementById('color-picker');
+    COLORS.forEach((c, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'sw-color-btn' + (i === 0 ? ' active' : '');
+      btn.style.background = c.bg;
+      btn.onclick = () => {
+        selectedColor = i;
+        document.querySelectorAll('.sw-color-btn').forEach((b, j) => b.classList.toggle('active', j === i));
+      };
+      picker.appendChild(btn);
+    });
+  }
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function getInitials(name) { return name ? name.slice(0, 2).toUpperCase() : '??'; }
+  function timeAgo(ts) {
+    const diff = Math.floor((Date.now() - ts) / 1000);
+    if (diff < 60) return '방금 전';
+    if (diff < 3600) return Math.floor(diff / 60) + '분 전';
+    if (diff < 86400) return Math.floor(diff / 3600) + '시간 전';
+    return Math.floor(diff / 86400) + '일 전';
+  }
+
+  function loadFeedbacks() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      feedbacks = raw ? JSON.parse(raw) : [];
+    } catch(e) { feedbacks = []; }
+    render();
+  }
+
+  function saveFeedbacks() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(feedbacks));
+  }
+
+  function submitFeedback() {
+    const from = document.getElementById('input-from').value.trim();
+    const to = document.getElementById('input-to').value.trim();
+    const msg = document.getElementById('input-msg').value.trim();
+    if (!from || !to || !msg) { alert('이름, 받는 분, 내용을 모두 입력해주세요 🌸'); return; }
+    feedbacks.unshift({ id: Date.now() + Math.random(), from, to, msg, color: selectedColor, likes: 0, ts: Date.now() });
+    saveFeedbacks();
+    document.getElementById('input-msg').value = '';
+    render();
+  }
+
+  function toggleLike(id) {
+    const f = feedbacks.find(x => x.id === id);
+    if (!f) return;
+    if (likedIds.has(id)) {
+      f.likes = Math.max(0, (f.likes || 0) - 1);
+      likedIds.delete(id);
+    } else {
+      f.likes = (f.likes || 0) + 1;
+      likedIds.add(id);
+    }
+    savelikedIds();
+    saveFeedbacks();
+    render();
+  }
+
+  function render() {
+    const totalLikes = feedbacks.reduce((s, f) => s + (f.likes || 0), 0);
+    const people = new Set(feedbacks.map(f => f.from)).size;
+    document.getElementById('stat-count').textContent = feedbacks.length;
+    document.getElementById('stat-likes').textContent = totalLikes;
+    document.getElementById('stat-people').textContent = people;
+
+    const mostLiked = feedbacks.reduce((best, f) => (f.likes || 0) > ((best && best.likes) || -1) ? f : best, null);
+
+    const feed = document.getElementById('feed');
+    if (feedbacks.length === 0) {
+      feed.innerHTML = '<div class="sw-empty">아직 피드백이 없어요 🌱<br>첫 번째 따뜻한 말을 남겨보세요!</div>';
+    } else {
+      feed.innerHTML = feedbacks.map(f => {
+        const c = COLORS[f.color] || COLORS[0];
+        const isTop = mostLiked && f.id === mostLiked.id && (f.likes || 0) > 0;
+        const liked = likedIds.has(f.id);
+        return `<div class="sw-card" style="background:${c.bg};border-color:${c.border}">
+          ${isTop ? '<div class="sw-pop-badge">🏆 인기 피드백</div>' : ''}
+          <div class="sw-card-header">
+            <div class="sw-avatar">${getInitials(f.from)}</div>
+            <div class="sw-card-meta">
+              <span class="sw-from-name">${escHtml(f.from)}</span>
+              <span style="color:#C0A8D0;font-size:12px;margin:0 4px">→</span>
+              <span class="sw-to-name">${escHtml(f.to)}</span>
+              <div class="sw-time">${timeAgo(f.ts)}</div>
+            </div>
+          </div>
+          <div class="sw-card-body">${escHtml(f.msg)}</div>
+          <div class="sw-card-footer">
+            <button class="sw-like-btn ${liked ? 'liked' : ''}" onclick="toggleLike(${f.id})">
+              <span>${liked ? '💛' : '🤍'}</span> ${(f.likes || 0) > 0 ? f.likes : '좋아요'}
+            </button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    const counts = {};
+    feedbacks.forEach(f => { counts[f.from] = (counts[f.from] || 0) + 1; });
+    const lb = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+    const lbEl = document.getElementById('leaderboard');
+    if (lb.length === 0) {
+      lbEl.innerHTML = '<div class="sw-empty">아직 피드백이 없어요. 첫 번째 주인공이 되어보세요! 🎉</div>';
+    } else {
+      lbEl.innerHTML = lb.map(([name, count], i) =>
+        `<div class="sw-lb-row">
+          <div class="sw-lb-rank">${RANK_EMOJI[i] || (i+1)}</div>
+          <div class="sw-lb-av">${getInitials(name)}</div>
+          <div class="sw-lb-name">${escHtml(name)}</div>
+          <div class="sw-lb-count">💌 ${count}개</div>
+        </div>`
+      ).join('');
+    }
+  }
+
+  initColorPicker();
+  loadFeedbacks();
+</script>
+</body>
+</html>
